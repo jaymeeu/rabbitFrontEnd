@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import {Text, Button,Alert, StyleSheet, TextInput,View} from 'react-native';
+import {Text, Button,Alert, StyleSheet, TextInput,View, TouchableOpacity, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {Formik} from 'formik';
 import Axios from 'axios';
 import * as yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
+import {Ionicons} from '@expo/vector-icons';
 
 const server = 'http://192.168.43.190:3000';
 // const server = 'http://192.168.0.94:3000';
@@ -84,6 +85,7 @@ export default function EditTracker(props){
     const {rabbitForm, closeModal} = props ;
     const form = rabbitForm;
     return(
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
            {
                form == 'Doe' ?
@@ -181,8 +183,18 @@ export default function EditTracker(props){
                                 />
                             </View>
                             <Text style={styles.err}>{ touched.rebreed && errors.rebreed}</Text>
-
-                            <Button title="submit" color='maroon' onPress={handleSubmit}/>
+                            <Button title="submit" color='maroon' onPress={handleSubmit}/> 
+                            <TouchableOpacity onPress={handleSubmit}>
+                                <View style={styles.btn}>
+                                    <Ionicons 
+                                        style={{flex:1, textAlign:"right", paddingHorizontal:10}}
+                                        name = 'checkmark-done-outline'
+                                        size={25}
+                                        color="#2c9dd1"
+                                    />
+                                    <Text style={{flex:1}}>Submit</Text>
+                                </View>
+                            </TouchableOpacity>
                             
                         </View>
                     )}
@@ -218,6 +230,7 @@ export default function EditTracker(props){
                             </View>
                             <Text style={styles.err}>{ touched.rebreed && errors.rebreed}</Text>
                             <Button title="submit" color='maroon' onPress={handleSubmit}/> 
+
                         </View>
                     )}
                     </Formik>
@@ -319,6 +332,7 @@ export default function EditTracker(props){
                     </Formik>
                 }
         </View>
+        </TouchableWithoutFeedback>
     )
 }
 

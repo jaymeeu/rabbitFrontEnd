@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, Button, TextInput,View, TouchableOpacity} from 'react-native';
+import {Text, Button, TextInput,View, TouchableOpacity, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {Formik} from 'formik';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Axios from 'axios';
@@ -29,6 +29,7 @@ export default function MedicationForm(props){
   };
   const navigation = useNavigation();
     return(
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
         <View>
          
             <Formik
@@ -95,11 +96,22 @@ export default function MedicationForm(props){
                             onCancel={hideDatePicker}
                         />
                 </View>
-                    
-                <Button title="submit" color='maroon' onPress={handleSubmit}/>
+                <TouchableOpacity onPress={handleSubmit}>
+                    <View style={styles.btn}>
+                        <Ionicons 
+                            style={{flex:1, textAlign:"right", paddingHorizontal:10}}
+                            name = 'checkmark-done-outline'
+                            size={25}
+                            color="#2c9dd1"
+                        />
+                        <Text style={{flex:1}}>Submit</Text>
+                    </View>
+                </TouchableOpacity>
+                
                 </View>
             )}
             </Formik>
         </View>
+    </TouchableWithoutFeedback>
     )
 }

@@ -6,10 +6,10 @@ export default function TopMenu() {
     return (
         <View>
             <View style={styles.top}>
-            <Pressable>
+            {/* <Pressable>
                 <Image style={styles.menu} source={require('../../assets/icon.png')} />
-            </Pressable>
-            <Text style={styles.appName}>Stock Management</Text>
+            </Pressable> */}
+            <Text style={styles.appName}>Rabbit Farm Management System</Text>
             </View>
            
         </View>

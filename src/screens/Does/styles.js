@@ -48,6 +48,10 @@ head:{
      fontStyle: 'italic',
      paddingBottom: 10,
 },
+line:{
+  borderBottomColor: "white",
+  borderBottomWidth: 2
+}
 
   });
   export default styles;

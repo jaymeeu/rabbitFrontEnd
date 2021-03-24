@@ -10,7 +10,8 @@ import { useNavigation } from '@react-navigation/native';
 function Report() {
   const navigation = useNavigation();
     const [items, setItems] = React.useState([
-        { name: 'Activity Report', code: '#1abc9c', iconPath: require('../../../assets/icons/doe3.png') },
+      { name: 'Todo', code: '#2ecc71', iconPath: require('../../../assets/icons/buck.png') },  
+      { name: 'Activity Report', code: '#1abc9c', iconPath: require('../../../assets/icons/doe3.png') },
         { name: 'Sale Report', code: '#2ecc71', iconPath: require('../../../assets/icons/buck.png') },
         { name: 'Rabbit Stat', code: '#3498db', iconPath: require('../../../assets/icons/kitten2.png') },
        ])

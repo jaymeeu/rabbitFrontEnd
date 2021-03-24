@@ -35,7 +35,7 @@ const diffDaysNegative = Math.abs(diffDays)
                 <View style={{flex: 1}}>
                   {
                     diffDays > 0 ?
-                    <Text style={{paddingVertical: 10}}>Check if doe in pregnant {diffDays} days</Text>
+                    <Text style={{paddingVertical: 10}}>Check if doe in pregnant in {diffDays} days</Text>
                     :
                     diffDays == 0 ?
                     <Text style={{paddingVertical: 10}}> Check if doe pregnant today and update doe state</Text>
@@ -45,7 +45,7 @@ const diffDaysNegative = Math.abs(diffDays)
                 </View>
                 :
                 <View style={{flex: 1}}></View>
-                }
+              }
               <TouchableOpacity onPress={()=>setShowMed(!showMed)}>
                 {
                   showMed ? 
@@ -58,10 +58,10 @@ const diffDaysNegative = Math.abs(diffDays)
             <View>
               <Text style={styles.head}> 
                 {
-                  item.state  === "Available" 
-                  ? 
-                    "Doe is available for breeding"
-                  : item.state  === "Bred" ? "Doe has been crossed" :"Doe is pregnant"
+                  item.state  === "Available" ? "Doe is available for breeding"
+                  : item.state  === "Bred" ? "Doe has been crossed" 
+                  : item.state  === "Pregnant" ? "Doe is Pregnant" 
+                  :"Doe is a Mother"
                 }
               </Text>
 
@@ -86,25 +86,62 @@ const diffDaysNegative = Math.abs(diffDays)
                     <Text style={{flex: 1}}>Cage No.:</Text> 
                     <Text style={{flex: 1}}> {item.cageNo}</Text>
                   </Card>
-                  <Card> 
-                    <Text style={{flex: 1}}>Date Crossed.:</Text> 
-                    <Text style={{flex: 1}}> {item.dateCrossed}</Text>
-                  </Card>
-                  <Card> 
-                    <Text style={{flex: 1}}>confirm Pregnancy on.:</Text> 
-                    <Text style={{flex: 1}}> {item.checkPreg}</Text>
-                  </Card>
+
+                  {item.state == 'Bred' ? 
+                    <>
+                      <Card> 
+                        <Text style={{flex: 1}}>Date Crossed.:</Text> 
+                        <Text style={{flex: 1}}> {item.dateCrossed.substring(0,15)}</Text>
+                      </Card>
+                      <Card> 
+                        <Text style={{flex: 1}}>Confirm Pregnancy on.:</Text> 
+                        <Text style={{flex: 1}}> {item.checkPreg.substring(0,15)}</Text>
+                      </Card>
+                    </>
+                    :
+                    null
+                  }
                   {item.state == 'Pregnant' ?
                   <>
                   <Card> 
+                    <Text style={{flex: 1}}>Date Crossed.:</Text> 
+                    <Text style={{flex: 1}}> {item.dateCrossed.substring(0,15)}</Text>
+                  </Card>
+                  <Card> 
+                    <Text style={{flex: 1}}>Confirmed Pregnancy on:</Text> 
+                    <Text style={{flex: 1}}> {item.checkPreg.substring(0,15)}</Text>
+                  </Card>
+                  <Card> 
                     <Text style={{flex: 1}}>Add Nest to Cage on.:</Text> 
-                    <Text style={{flex: 1}}> {item.dateCrossed}</Text>
+                    <Text style={{flex: 1}}> {item.addNest.substring(0,15)}</Text>
                   </Card>
                   <Card> 
                     <Text style={{flex: 1}}>Expected Delivery Crossed.:</Text> 
-                    <Text style={{flex: 1}}> {item.expectedDelivery}</Text>
+                    <Text style={{flex: 1}}> {item.expectedDelivery.substring(0,15)}</Text>
                   </Card>
                   </>
+                  :
+                  item.state == 'Mother' ?
+                    <>
+                      <Card> 
+                        <Text style={{flex: 1}}>Delivery Date:</Text> 
+                        <Text style={{flex: 1}}> {item.actualDelivery.substring(0,15)}</Text>
+                      </Card>
+                      <Card> 
+                        <Text style={{flex: 1}}>Remove Kitten Nest:</Text> 
+                        <Text style={{flex: 1}}> {item.removeNest.substring(0,15)}</Text>
+                      </Card>
+                      <Card> 
+                        <Text style={{flex: 1}}>Ready Date:</Text> 
+                        <Text style={{flex: 1}}> {item.okToRebreed.substring(0,15)}</Text>
+                      </Card>
+                    </>
+                  :
+                  item.state == "Available" ?
+                    <Card> 
+                      <Text style={{flex: 1}}>Last Ready Date:</Text> 
+                      <Text style={{flex: 1}}> {item.okToRebreed.substring(0,15)}</Text>
+                    </Card>
                   :
                   null
                   }
@@ -117,26 +154,12 @@ const diffDaysNegative = Math.abs(diffDays)
                   <Text style={{flex: 1}}>No of Last Kitten Produced:</Text> 
                   <Text style={{flex: 1}}> {item.lastKit}</Text> 
                     </Card>
-                  <Card> 
-                  <Text style={{flex: 1}}>No of Last Male Kitten:</Text> 
-                  <Text style={{flex: 1}}> {item.lastMale}</Text>
-                    </Card>
-                  <Card> 
-                  <Text style={{flex: 1}}>No of Last Female Kitten:</Text> 
-                  <Text style={{flex: 1}}> {item.lastFemale}</Text>
-                    </Card>
+                  
                   <Card> 
                   <Text style={{flex: 1}}>Total No of Kitten Produced:</Text> 
                   <Text style={{flex: 1}}> {item.totalKit}</Text>
                     </Card>
-                  <Card> 
-                  <Text style={{flex: 1}}>Total No of Male Kitten:</Text> 
-                  <Text style={{flex: 1}}> {item.totalMale}</Text>
-                    </Card>
-                  <Card> 
-                  <Text style={{flex: 1}}>Total No of Female Kitten:</Text> 
-                  <Text style={{flex: 1}}> {item.totalFemale}</Text>
-                    </Card>
+                 
                 </ScrollView>
               
               }
@@ -197,7 +220,7 @@ const diffDaysNegative = Math.abs(diffDays)
                  
                 }/>
                 {showUpdate ?
-                  <UpdateState rabbitName={item.name} rabbitState={item.state} rabbitForm={item.form} dateCrossed={item.dateCrossed} tmale = {item.totalMale} tfemale = {item.totalFemale} tkitten = {item.totalKit}/>
+                  <UpdateState rabbitName={item.name} rabbitState={item.state} rabbitForm={item.form} dateCrossed={item.dateCrossed} tmale = {item.totalMale} tfemale = {item.totalFemale} tkitten = {item.totalKit} buckBredWith ={item.buckBredWith}/>
                   :
                   showRemove ?
                   <RemoveBreed rabbitName={item.name} rabbitState={item.state} rabbitForm={item.form}/>

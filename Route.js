@@ -7,6 +7,7 @@ import TrackerBuck from './src/screens/Tracker/TrackerBuck';
 import TrackerKit from './src/screens/Tracker/TrackerKit';
 import TrackerWeaner from './src/screens/Tracker/TrackerWeaner';
 import Report from './src/screens/Report/Report';
+import Todo from './src/screens/Report/Todo';
 import DailyReport from './src/screens/Report/DailyReport';
 import SalesReport from './src/screens/Report/SaleReport';
 import SalesDetails from './src/screens/Report/SalesDetails';
@@ -53,6 +54,7 @@ function Route() {
     <Stack.Screen name ="Weaner" component={Weaner} options={{headerShown: false}}/>
     <Stack.Screen name ="Weaner Details" component={WeanerDetails} options={{headerShown: false}}/>
     <Stack.Screen name ="WeanerForm" component={WeanerForm} options={{headerShown: false}}/>
+    <Stack.Screen name ="medicalDetails" component={MedicalDetails} options={{headerShown: false}}/>
   </Stack.Navigator>
 
   createKittensStack = () => 
@@ -60,6 +62,7 @@ function Route() {
     <Stack.Screen name ="Kitten" component={Kitten} options={{headerShown: false}}/>
     <Stack.Screen name ="Kitten Details" component={KittenDetails} options={{headerShown: false}}/>
     <Stack.Screen name ="KittenForm" component={KittenForm} options={{headerShown: false}}/>
+    <Stack.Screen name ="medicalDetails" component={MedicalDetails} options={{headerShown: false}}/>
   </Stack.Navigator>
 
   createBucksStack = () => 
@@ -92,16 +95,17 @@ function Route() {
   
   createTrackerStack = ()=>
   <Stack.Navigator>
-    <Stack.Screen name ="Trackers" component={TrackerHome}/>
-    <Stack.Screen name ="Doe Tracker" component={TrackerDoe} />
-    <Stack.Screen name ="Buck Tracker" component={TrackerBuck}/>
-    <Stack.Screen name ="Kit Tracker" component={TrackerKit}/>
+    <Stack.Screen name ="Trackers" component={TrackerHome} options={{headerStyle:{backgroundColor:'#008080'}, headerTintColor:'white'}}/>
+    <Stack.Screen name ="Doe Tracker" component={TrackerDoe} options={{headerStyle:{backgroundColor:'#008080'}, headerTintColor:'white'}}/>
+    <Stack.Screen name ="Buck Tracker" component={TrackerBuck}options={{headerStyle:{backgroundColor:'#008080'}, headerTintColor:'white'}}/>
+    <Stack.Screen name ="Kit Tracker" component={TrackerKit}options={{headerStyle:{backgroundColor:'#008080'}, headerTintColor:'white'}}/>
     <Stack.Screen name ="Weaner Tracker" component={TrackerWeaner}/>
   </Stack.Navigator>
 
 createrReportStack = () =>
 <Stack.Navigator>
   <Stack.Screen name ="Report" component={Report} options={{headerStyle:{backgroundColor:'#008080'}, headerTintColor:'white'}}/>
+  <Stack.Screen name ="Todo" component={Todo} options={{headerStyle:{backgroundColor:'#008080'}, headerTintColor:'white'}}/>
   <Stack.Screen name ="Activity Report" component={DailyReport} options={{headerStyle:{backgroundColor:'#008080'}, headerTintColor:'white'}}/>
   <Stack.Screen name ="Sale Report" component={SalesReport} options={{headerStyle:{backgroundColor:'#008080'}, headerTintColor:'white'}}/>
   <Stack.Screen name ="Rabbit Stat" component={RabbitStat} options={{headerStyle:{backgroundColor:'#008080'}, headerTintColor:'white'}}/>

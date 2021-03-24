@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Text,View, TouchableOpacity, Alert} from 'react-native';
+import {Text,View, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Alert} from 'react-native';
 import {Formik} from 'formik';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Axios from 'axios';
@@ -16,10 +16,11 @@ export default function BreedRabbit(props){
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [selectedDate, setSelectedDate] = useState("Select Date");
-    const [selectedRabbit, setSelectedRabbit] = useState("")
-    const [listDoe, setListDoe] = useState([])
-    const [listBuck, setListBuck] = useState([])
-  const showDatePicker = () => {
+    const [selectedRabbit, setSelectedRabbit] = useState("");
+    const [listDoe, setListDoe] = useState([]);
+    const [listBuck, setListBuck] = useState([]);
+
+    const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
  
@@ -43,6 +44,7 @@ export default function BreedRabbit(props){
       });
   }, [])
     return(
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
             
             <Formik
@@ -136,5 +138,6 @@ export default function BreedRabbit(props){
             )}
             </Formik>
         </View>
+    </TouchableWithoutFeedback>
     )
 }

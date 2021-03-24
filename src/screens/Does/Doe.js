@@ -18,7 +18,7 @@ const actions = [
     position: 1
   },
  ];
- 
+
 function Doe() {
   const [data, setData] = useState([]);
   const navigation = useNavigation();
@@ -39,7 +39,7 @@ function Doe() {
       Axios.get(`${server}/getDoes`)
         .then((response)=>{
             setData(response.data);
-        });
+        }); 
     }, []);
  
     return (
@@ -47,13 +47,14 @@ function Doe() {
             <View style={layout.TopMenu1}></View>
             <View style={layout.BodyView}>
               <FlatList
-               ListHeaderComponent={<Text>List of doe</Text>}
+               ListHeaderComponent={<Text style={styles.line}></Text>}
                 keyExtractor={item => item.id.toString()}
                 data={data}
                 renderItem={renderItem}
-                ListFooterComponent={<Text>List of doe footer</Text>}
+                ListFooterComponent={<Text style={styles.line}></Text>}
               /> 
             </View>
+            
             <FloatingAction
               actions={actions}
               onPressItem={name => {

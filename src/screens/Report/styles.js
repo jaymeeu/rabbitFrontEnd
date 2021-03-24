@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
       height: 120,
     },
     itemName: {
+      marginVertical: 15,
       fontSize: 18,
       color: '#fff',
       fontWeight: '600',

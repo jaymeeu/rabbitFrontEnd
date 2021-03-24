@@ -4,41 +4,68 @@ import styles from './styles';
 import layout from '../../src/screens/layout';
 import Axios from 'axios';
 import { ScrollView } from "react-native-gesture-handler";
-import DatePicker from 'react-native-datepicker'
+import { Alert } from "react-native";
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {Ionicons} from '@expo/vector-icons';
 
 function KittenForm() {
-  const [category, setcategory] = useState('');
-  const [type, settype] = useState('');
-  const [pDoe, setpDoe] = useState('');
-  const [pBuck, setpBuck] = useState('');
-  const [mKitten, setmKitten] = useState('');
-  const [fKitten, setfKitten] = useState('');
-  const [tKitten, settKitten] = useState('');
+  const [kitCategory, setKitCategory] = useState('');
+  const [doeName, setDoeName] = useState('');
+  const [buckName, setBuckName] = useState('');
+  const [kitten, setKitten] = useState('');
   const [description, setdescription] = useState('');
-  const [dateProduced, setdateProduced] = useState('');
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [selectedDate, setSelectedDate] = useState("Select Date");
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+ 
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+ 
+  const handleConfirm = (date) => {
+    setSelectedDate(date.toString());
+    hideDatePicker();
+  };
+
  const server = 'http://192.168.43.190:3000';
+//  const server = 'http://192.168.0.106:3000';
 
   const submit = () =>{
-    Axios.post(`${server}/insertKitten`, {
-        category: category,
-        type: type, 
-        pDoe: pDoe,
-        pBuck: pBuck,
-        mKitten: mKitten,
-        fKitten: fKitten,
-        tKitten: tKitten,
-        description: description,
-        dateProduced: dateProduced
-    });
-    setcategory('');
-    settype('');
-    setpDoe('');
-    setpBuck('');
-    setfKitten('');
-    setmKitten('');
-    settKitten('');
-    setdescription('');
-    setdateProduced('');
+      if(kitCategory == "" || doeName == "" || buckName == "" || kitten == "" || description == "" || selectedDate == "Select Date" ){
+          Alert.alert("Note", "All fields are required")
+      }
+      else{
+        Axios.post(`${server}/addKitten`, {
+            kitCategory: kitCategory,
+            doeName: doeName,
+            buckName: buckName,
+            kitten: kitten,
+            description: description,
+            dateProduced: selectedDate
+        }).then((response)=>{
+            if(response.data.message == "exist"){
+                Alert.alert("Note", `${kitCategory} already exist`)
+            }
+            else if (response.data.message == "available"){
+                Alert.alert("Success", `${kitCategory} added to kitten list`)
+                setKitCategory('');
+                setDoeName('');
+                setBuckName('');
+                setfKitten('');
+                setmKitten('');
+                setdescription('');
+                setSelectedDate('');
+            }
+            else{
+                Alert.alert("Error", `An error occur check your internet`)
+            }
+        }) 
+      }
+   
+    
 } 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -46,34 +73,25 @@ function KittenForm() {
         <View style={layout.TopMenu1}></View>
         <ScrollView>
         <View style={styles.form}>
-            <View style={styles.header}><Text style={styles.title}>Add Doe</Text></View>
+            <View style={styles.header}><Text style={styles.title}>Add Kitten</Text></View>
             <View style={styles.formBody}>
                 
                 <View style={styles.control}>
                     <Text style={styles.inputTitle}>Kitten Category Name</Text>
                     <TextInput style={styles.input} 
-                    placeholder='Enter unique kitten category'
+                    placeholder='Enter unique kitten kitCategory'
                     placeholderTextColor= 'white'
-                    value={category}
-                    onChangeText = {category=> setcategory(category)}/>
+                    value={kitCategory}
+                    onChangeText = {kitCategory=> setKitCategory(kitCategory)}/>
                 </View>
 
-                <View style={styles.control}>
-                    <Text style={styles.inputTitle}>Rabbit Type</Text>
-                    <TextInput style={styles.input}
-                     placeholder='Enter Rabbit Breed Type' 
-                     placeholderTextColor= 'white'
-                     value={type}
-                    onChangeText = {type=> settype(type)}/>
-
-                </View>
                 <View style={styles.control}>
                     <Text style={styles.inputTitle}>Parent Doe</Text>
                     <TextInput style={styles.input} 
                     placeholder='Enter Parent (Doe)'
                     placeholderTextColor= 'white'
-                    value={pDoe}
-                    onChangeText = {pDoe=> setpDoe(pDoe)}
+                    value={doeName}
+                    onChangeText = {doeName=> setDoeName(doeName)}
                      />
                 </View>
                 <View style={styles.control}>
@@ -81,37 +99,21 @@ function KittenForm() {
                     <TextInput style={styles.input} 
                     placeholder='Enter Parent (Buck)'
                     placeholderTextColor= 'white'
-                    value={pBuck}
-                    onChangeText = {pBuck=> setpBuck(pBuck)}
+                    value={buckName}
+                    onChangeText = {buckName=> setBuckName(buckName)}
                      />
                 </View>
                 <View style={styles.control}>
-                    <Text style={styles.inputTitle}>Number of Male Kitten</Text>
+                    <Text style={styles.inputTitle}>Number of Kitten</Text>
                     <TextInput style={styles.input} 
-                    placeholder='Enter no. of male kitten'
+                    placeholder='Enter no. of kitten'
                     placeholderTextColor= 'white'
-                    value={mKitten}
-                    onChangeText = {mKitten=> setmKitten(mKitten)}
+                    value={kitten}
+                    keyboardType='numeric'
+                    onChangeText = {kitten=> setKitten(kitten)}
                      />
                 </View>
-                <View style={styles.control}>
-                    <Text style={styles.inputTitle}>Number of Female Kitten</Text>
-                    <TextInput style={styles.input} 
-                    placeholder= 'Enter no. of female kitten'
-                    placeholderTextColor= 'white'
-                    value={fKitten}
-                    onChangeText = {fKitten=> setfKitten(fKitten)}
-                     />
-                </View>
-                <View style={styles.control}>
-                    <Text style={styles.inputTitle}>Total Number Kitten</Text>
-                    <TextInput style={styles.input} 
-                    placeholder= 'Enter  total no. of kitten'
-                    placeholderTextColor= 'white'
-                    value={tKitten}
-                    onChangeText = {tKitten=> settKitten(tKitten)}
-                     />
-                </View>
+               
                 <View style={styles.control}>
                     <Text style={styles.inputTitle}>Description</Text>
                     <TextInput style={styles.input} 
@@ -123,36 +125,39 @@ function KittenForm() {
                 </View>
                 <View style={styles.control}>
                     <Text style={styles.inputTitle}>Date Produced</Text>
-                    <DatePicker
-                    style={{width: '100%'}}
-                    date={dateProduced}
-                    mode="date"
-                    placeholder="select date"
-                    format="YYYY-MM-DD"
-                    minDate="2018-05-01"
-                    maxDate="2030-06-01"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                    dateIcon: { 
-                        position: 'absolute',
-                        right: 0,
-                        top: 4,
-                        marginRight: 0
-                    },
-                    dateInput: {
-                        marginRight: 36
-                    }
-                    }}
-                    onDateChange={(dateProduced) => {setdateProduced(dateProduced)}}
-      />
+                    <View>
+                    <View style={{flexDirection:'row'}}>
+                        <Text style={styles.text2} onPress={showDatePicker}>{selectedDate.substring(0,15)}</Text>
+                        <TouchableOpacity onPress={showDatePicker} style={styles.icon}>
+                            <Ionicons 
+                                name = 'calendar-outline'
+                                size= {25}
+                                color="#2c9dd1"
+                            />
+                        </TouchableOpacity>
+                    </View>
+                  
+                    <DateTimePickerModal
+                        isVisible={isDatePickerVisible}
+                        mode="date"
+                        onConfirm={handleConfirm}
+                        onCancel={hideDatePicker}
+                    />
+                </View>
+                <TouchableOpacity onPress={submit}>
+                    <View style={styles.btn}>
+                        <Ionicons 
+                            style={{flex:1, textAlign:"right", paddingHorizontal:10}}
+                            name = 'checkmark-done-outline'
+                            size={25}
+                            color="#2c9dd1"
+                        />
+                        <Text style={{flex:1}}>Submit</Text>
+                    </View>
+                </TouchableOpacity>
                 </View>
 
-                <View style={styles.control}>
-                    <TouchableOpacity style={styles.btn} onPress={submit}> 
-                    <Text style={{color: '#003738'}}> Submitt </Text>
-                    </TouchableOpacity>
-                </View>
+               
             </View>
            
         </View>

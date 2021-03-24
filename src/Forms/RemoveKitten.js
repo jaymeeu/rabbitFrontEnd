@@ -10,10 +10,11 @@ import { useNavigation } from '@react-navigation/native';
 
 const server = 'http://192.168.43.190:3000';
 // const server = 'http://192.168.0.94:3000';
-export default function RemoveBreed(props){
+export default function RemoveKitten(props){
     const navigation = useNavigation();
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [selectedDate, setSelectedDate] = useState("Select Date");
+    const [num, setNum] = useState("")
     const [price, setPrice] = useState("")
     const [buyer, setBuyer] = useState("")
     const [description, setDescription] = useState("")
@@ -31,7 +32,7 @@ export default function RemoveBreed(props){
         hideDatePicker();
     };
 
-    const {rabbitName, rabbitState, rabbitForm} = props   
+    const {rabbitName, rabbitState, rabbitForm, number} = props   
 
     const data = [
             { label: 'Sold'},
@@ -39,36 +40,53 @@ export default function RemoveBreed(props){
         ];
     const handleSubmit = ()=>{
         if(selectOption == "Death"){
-            if(selectedDate == "Select Date"){
+            if(selectedDate == "Select Date" || num =="" ){
                 Alert.alert("Note", "All Field Required")
             }
             else{
-                    Axios.put(`${server}/delete`, 
-                    { 
-                        rabbitName : rabbitName,
-                        date : selectedDate,
-                        form : rabbitForm,
-                        buyer: buyer,
-                        state : rabbitState,
-                        option : selectOption,
-                        price: price,
-                        description: description
-                    })
-                    .then((response)=>{});
-                        Alert.alert("Success", `${rabbitName} Removed`);
-                        navigation.navigate("Farm");
-                }
-            }
-            else if(selectOption == "Sold"){
-                if(selectedDate == "Select Date" || buyer =="" || price == "" || description == ""){
-                    Alert.alert("Note", "All Field Required")
+                if(parseInt(num) >= parseInt(number)){
+                    Alert.alert("Note", "Number to be removed cannot be more than number available")
+                    setNum(""); 
                 }
                 else{
-                        Axios.put(`${server}/delete`, 
+                    Axios.put(`${server}/updateKitten`, 
                         { 
                             rabbitName : rabbitName,
                             date : selectedDate,
                             form : rabbitForm,
+                            num: num,
+                            number: number,
+                            buyer: buyer,
+                            state : rabbitState,
+                            option : selectOption,
+                            price: price,
+                            description: description
+                        })
+                        .then((response)=>{});
+                            Alert.alert("Success", `${num} of ${rabbitName} is Removed`);
+                            navigation.navigate("Farm");
+                    }  
+                }
+            }
+            else if(selectOption == "Sold"){
+                if(selectedDate == "Select Date" || buyer =="" || num =="" || price == "" || description == ""){
+                    Alert.alert("Note", "All Field Required")
+                    }
+
+                else{
+                    
+                    if(parseInt(num) >= parseInt(number)){
+                        Alert.alert("Note", "Number to be removed cannot be more than number available")
+                        setNum(""); 
+                    }
+                    else{
+                        Axios.put(`${server}/updateKitten`, 
+                        { 
+                            rabbitName : rabbitName,
+                            date : selectedDate,
+                            form : rabbitForm,
+                            num: num,
+                            number: number,
                             state : rabbitState,
                             buyer: buyer,
                             option : selectOption,
@@ -76,8 +94,9 @@ export default function RemoveBreed(props){
                             description: description
                         })
                         .then((response)=>{});
-                            Alert.alert("Success", `${rabbitName} Removed`);
+                            Alert.alert("Success", `${num} of ${rabbitName} got sold`);
                             navigation.navigate("Farm");
+                        }
                     }
                 }
             else{
@@ -113,13 +132,20 @@ export default function RemoveBreed(props){
                             />
                         </TouchableOpacity>
                     </View>
-                    <DateTimePickerModal
-                        isVisible={isDatePickerVisible}
-                        mode="date"
-                        onConfirm={handleConfirm}
-                        onCancel={hideDatePicker}
-                    />
+                        <DateTimePickerModal
+                            isVisible={isDatePickerVisible}
+                            mode="date"
+                            onConfirm={handleConfirm}
+                            onCancel={hideDatePicker}
+                        />
                 </View>
+                <TextInput
+                    style={styles.input}
+                    placeholder='Number of Kitten'
+                    onChangeText={num=>setNum(num)}
+                    value={num}
+                    keyboardType="numeric"
+                />
                 { 
                     selectOption == "Sold" ?
                     <>
@@ -147,8 +173,6 @@ export default function RemoveBreed(props){
                     null
 
                 }
-
-                
                 <TouchableOpacity onPress={handleSubmit}>
                     <View style={styles.btn}>
                         {selectOption == "Sold" ? 

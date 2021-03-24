@@ -33,14 +33,23 @@ const navigation = useNavigation();
             <View style={layout.BodyView}>
               <View style={{flexDirection: 'row'}}>
                 <View style={{flex: 2}}>
+
                   {
-                    diffDays > 0 ?
-                    <Text style={{paddingVertical: 10}}>Buck will be ready in {diffDays} days</Text>
+                    item.state  === "Bred" 
+                    ? 
+                    <>
+                      {
+                        diffDays > 0 ?
+                        <Text style={{paddingVertical: 10}}>Buck will be ready in {diffDays} days</Text>
+                        :
+                        diffDays == 0 ?
+                        <Text style={{paddingVertical: 10}}>Buck will be ready today update state to available</Text>
+                        :
+                        <Text style={{paddingVertical: 10}}>Buck has been available {diffDaysNegative} days ago update state to available</Text>
+                      }
+                    </>
                     :
-                    diffDays == 0 ?
-                    <Text style={{paddingVertical: 10}}>Buck will be ready today update state to available</Text>
-                    :
-                    <Text style={{paddingVertical: 10}}>Buck has been available {diffDaysNegative} days ago update state to available</Text>
+                    null
                   }
                 </View>
                 <TouchableOpacity style={{flex:1}} onPress={()=>setShowMed(!showMed)}>
@@ -91,11 +100,11 @@ const navigation = useNavigation();
                       </Card>
                       <Card>
                         <Text style={{flex: 1}}>Date Crossed:</Text> 
-                        <Text style={{flex: 1}}>{item.dateCrossed}</Text>
+                        <Text style={{flex: 1}}>{item.dateCrossed.substring(0,15)}</Text>
                       </Card>
                       <Card>
                         <Text style={{flex: 1}}>Expected Ready Date :</Text> 
-                        <Text style={{flex: 1}}>{item.expectedReadyDate}</Text>
+                        <Text style={{flex: 1}}>{item.expectedReadyDate.substring(0,15)}</Text>
                       </Card>
                     </ScrollView>
                   

@@ -40,7 +40,7 @@ function SalesReport() {
     <TouchableOpacity onPress={()=>{navigation.navigate('Sale Details', {item : item} )}}>
        <Card>  
          <Text style={{flex: 1}}>{item.rabbitName}</Text>
-        <Text style={{flex: 1}}>{item.price}</Text>
+        <Text style={{flex: 1}}>{item.buyer}</Text>
         <Text style={{flex: 1}}>{(item.date).substring(0, 15)}</Text>
       </Card>
     </TouchableOpacity>
@@ -75,7 +75,7 @@ function SalesReport() {
                 <View>
                   <Card> 
                     <Text style={{flex: 1}}>Rabbit</Text>
-                    <Text style={{flex: 1}}>Price</Text>
+                    <Text style={{flex: 1}}>Buyer</Text>
                     <Text style={{flex: 1}}>Date</Text>
                   </Card>
                   <FlatList

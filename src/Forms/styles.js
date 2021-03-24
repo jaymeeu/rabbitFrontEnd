@@ -34,7 +34,7 @@ export default styles = StyleSheet.create({
         paddingVertical:10,
         borderRadius:6,
         borderWidth:1,
-        borderColor:'#f2f2f2',
+        borderColor:'#f2f2f2'
     },
     btn:{
         flexDirection:'row',
@@ -42,8 +42,7 @@ export default styles = StyleSheet.create({
         paddingHorizontal:20 ,
         paddingVertical:20,
         backgroundColor:'maroon',
-        borderRadius: 10,
+        borderRadius: 10
     },
-    picker: { borderWidth: 1, borderColor:'#f2f2f2',paddingHorizontal:10 ,paddingVertical:10, borderRadius:6 }
-
+    picker: { borderWidth: 1, borderColor:'#f2f2f2', paddingHorizontal:10 ,paddingVertical:10, borderRadius:6 }
 })

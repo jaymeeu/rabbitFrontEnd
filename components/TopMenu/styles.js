@@ -3,11 +3,11 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
 top: {
     position: 'absolute',
-    top: 50,
+    top: 30,
     zIndex: 100,
     flexDirection: 'row',
     width: '100%',
-    paddingHorizontal: 15,
+    // paddingHorizontal: 15,
   },
   menu: {
     width: 25, 
@@ -16,8 +16,8 @@ top: {
   },
   appName: {
     marginLeft: 30,
-    fontSize: 18,
-    color: 'black'
+    fontSize: 22,
+    color: 'white'
   }
 
 })

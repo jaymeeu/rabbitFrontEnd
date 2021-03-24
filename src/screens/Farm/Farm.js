@@ -1,7 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Image, Text, View } from 'react-native';
 import layout from '../layout';
-import TopMenu from '../../../components/TopMenu';
 // import HomeCard from '../../components/HomeCard'
 import styles from './styles'
 import { FlatGrid } from 'react-native-super-grid';

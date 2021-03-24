@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, Text, Button, View } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import Axios from 'axios';
 import {PieChart} from "react-native-chart-kit";
 import Card from '../../../components/card'

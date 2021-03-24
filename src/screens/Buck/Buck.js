@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import Axios from 'axios';
 import { ListItem, Avatar } from 'react-native-elements'
 import styles from './styles';
+import * as Animatable from 'react-native-animatable';
+
 
 const server = 'http://192.168.43.190:3000';
 // const server = 'http://192.168.0.94:3000';
@@ -23,16 +25,18 @@ function Buck() {
 const navigation = useNavigation();
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.item} onPress={()=>{ navigation.navigate("Buck Details", {item: item} )}}>
-      <ListItem bottomDivider>
-        <Avatar rounded source={require('../../../assets/icons/buck.png')}/>
-        <ListItem.Content>
-          <ListItem.Title> {item.name}</ListItem.Title>
-          <ListItem.Subtitle>{item.state}</ListItem.Subtitle>
-        </ListItem.Content>
-        <ListItem.Chevron />
-    </ListItem> 
-    </TouchableOpacity>
+    <Animatable.View animation="fadeInUpBig">
+      <TouchableOpacity style={styles.item} onPress={()=>{ navigation.navigate("Buck Details", {item: item} )}}>
+        <ListItem bottomDivider>
+          <Avatar rounded source={require('../../../assets/icons/buck.png')}/>
+          <ListItem.Content>
+            <ListItem.Title> {item.name}</ListItem.Title>
+            <ListItem.Subtitle>{item.state}</ListItem.Subtitle>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem> 
+      </TouchableOpacity>
+    </Animatable.View>
   );
     useEffect(() => {
       Axios.get(`${server}/getBucks`)
@@ -46,11 +50,11 @@ const navigation = useNavigation();
             <View style={layout.TopMenu1}></View>
             <View style={layout.BodyView}>
                 <FlatList
-                ListHeaderComponent={<Text>List of buck</Text>}
+                ListHeaderComponent={<Text style={styles.line}></Text>}
                 keyExtractor={item => item.id.toString()}
                 data={data}
                 renderItem={renderItem}
-                ListFooterComponent={<Text>List of buck footer</Text>}
+                ListFooterComponent={<Text style= {styles.line}></Text>}
                 />                
             </View>
             <FloatingAction

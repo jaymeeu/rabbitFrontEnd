@@ -2,10 +2,11 @@ import React, {useEffect, useState} from "react";
 import styles from './styles';
 import Axios from 'axios';
 import { ListItem, Avatar } from 'react-native-elements'
-import { FlatList,View,Text, TouchableOpacity, Modal, StyleSheet } from "react-native";
+import { FlatList,View,Text, TouchableOpacity, Modal, TouchableWithoutFeedback, Keyboard, StyleSheet } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import {MaterialIcons} from '@expo/vector-icons';
 import MedicationForm from '../../Forms/MedicationForm'
+import * as Animatable from 'react-native-animatable';
 
 function BuckMedication(props) {
   const server = 'http://192.168.43.190:3000';
@@ -17,16 +18,19 @@ function BuckMedication(props) {
   const { buckname } = props;
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.item} onPress={()=>{ navigation.navigate("medicalDetails", {item: item} )}}>
-      <ListItem bottomDivider>
-        <Avatar rounded source={require('../../../assets/icons/buck.png')}/>
-        <ListItem.Content>
-          <ListItem.Title> {item.sickness}</ListItem.Title>
-          <ListItem.Subtitle>{item.medication}</ListItem.Subtitle>
-        </ListItem.Content>
-        <ListItem.Chevron />
-    </ListItem> 
-    </TouchableOpacity>
+    <Animatable.View animation="fadeInUpBig">
+      <TouchableOpacity style={styles.item} onPress={()=>{ navigation.navigate("medicalDetails", {item: item} )}}>
+        <ListItem bottomDivider>
+          <Avatar rounded source={require('../../../assets/icons/buck.png')}/>
+          <ListItem.Content>
+            <ListItem.Title> {item.sickness}</ListItem.Title>
+            <ListItem.Subtitle>{item.medication}</ListItem.Subtitle>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem> 
+      </TouchableOpacity>
+    </Animatable.View>
+    
   );
   useEffect(() => {
     Axios.post(`${server}/getMed`, {
@@ -37,10 +41,8 @@ function BuckMedication(props) {
         setMedDetails(response.data);
       }
       else{setMedDetails('No Medical Report Found')}
-        
     });
   }, [])
-
 
      return (
        <View>
@@ -69,7 +71,7 @@ function BuckMedication(props) {
             data={medDetails}
             renderItem={renderItem}
             ListFooterComponent={
-                <Text> End of List</Text>
+                <Text style={styles.line}></Text>
             }
             />
           }

@@ -40,6 +40,10 @@ head:{
      fontWeight:'700', 
      fontStyle: 'italic'
 },
+line:{
+  borderBottomColor: "white",
+  borderBottomWidth: 2
+}
 
   });
   export default styles;

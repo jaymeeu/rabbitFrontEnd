@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, TouchableOpacity, View, TextInput} from 'react-native';
+import {Text, TouchableOpacity, View, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import Axios from 'axios';
 import styles from './styles';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -12,12 +12,14 @@ const server = 'http://192.168.43.190:3000';
 // const server = 'http://192.168.0.94:3000';
 
 export default function UpdateState(props){
-    const {rabbitName, rabbitState, rabbitForm, dateCrossed, tmale, tfemale, tkitten} = props;
+    const {buckBredWith, rabbitName, rabbitState, rabbitForm, dateCrossed, tkitten} = props;
     const [selectedState, setSelectedState] = useState("");
     const [selectedDate, setSelectedDate] = useState("Select Date");
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const [fkit, setFkit] = useState("");
-    const [mkit, setMkit] = useState("");
+    
+    const [kitten, setKitten] = useState("");
+    const [description, setDescription] = useState("");
+    const [kitCategory, setKitCategory] = useState("");
     const navigation = useNavigation();
 
     const showDatePicker = () => {
@@ -47,29 +49,38 @@ export default function UpdateState(props){
         }  
     }
     const handleUpdateDoe = () =>{
-        console.log(tkitten)
-        if(selectedState == ""){
-            Alert.alert("All Field Required", "Note")
+       
+            if(selectedState == ""){    
+        Alert.alert("All Field Required", "Note")
+            {console.log(buckBredWith)}
         }
         else{
-            
             Axios.put(`${server}/updateDoe`,{
                 rabbitName : rabbitName,
                 rabbitState : rabbitState,
                 selectedState : selectedState,
                 dateCrossed: dateCrossed,
                 selectedDate: selectedDate,
-                mkit: mkit,
-                fkit: fkit,
-                tmale: tmale, 
-                tfemale: tfemale,
-                tkitten: tkitten
+                buckBredWith: buckBredWith,
+                kitten: kitten,
+                tkitten: tkitten,
+                description: description,
+                kitCategory: kitCategory
             })
-            Alert.alert("Success", `${rabbitName} State Updated`);
-            navigation.navigate("Farm");
+            .then((response) =>{
+                if(response.data.message == "exist"){
+                    Alert.alert("Error", `${kitCategory} already exist`); 
+                }
+                else{
+                    Alert.alert("Success", `${kitCategory} is added to kitten list`);
+                    navigation.navigate("Farm");
+                }
+            })
+            
         }
     }
     return(
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
             <View style={styles.picker}>
                 {rabbitForm == "Doe" ? 
@@ -136,17 +147,23 @@ export default function UpdateState(props){
                                 </View>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder='Number of Male Kit'
-                                    onChangeText={mkit=>setMkit(mkit)}
-                                    value={mkit}
+                                    placeholder='Enter Unique Kitten Category Name'
+                                    onChangeText={kitCategory=>setKitCategory(kitCategory)}
+                                    value={kitCategory}
+                                /> 
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder='Number Kitten'
+                                    onChangeText={kitten=>setKitten(kitten)}
+                                    value={kitten}
                                     keyboardType='numeric'
                                 /> 
-                               <TextInput
+                             
+                                 <TextInput
                                     style={styles.input}
-                                    placeholder='Number of Female Kit'
-                                    onChangeText={fkit=>setFkit(fkit)}
-                                    value={fkit}
-                                    keyboardType='numeric'
+                                    placeholder='Description'
+                                    onChangeText={description=>setDescription(description)}
+                                    value={description}
                                 /> 
                             </>
                             :
@@ -208,8 +225,7 @@ export default function UpdateState(props){
                     }
             
                 </View>
-               
-                   
         </View>
+        </TouchableWithoutFeedback>
     )
 }
